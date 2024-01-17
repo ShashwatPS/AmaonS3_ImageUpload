@@ -14,6 +14,8 @@ const s3 = new S3({
     region: "ap-south-1",
 });
 
+
+// Uploading API
 const upload = multer({
     storage: multerS3({
         s3: s3,
