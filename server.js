@@ -3,9 +3,11 @@ const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
 const express = require('express');
 const multer = require('multer');
 const multerS3 = require('multer-s3');
+const cors = require('cors');
 
 const app = express();
 
+app.use(cors());
 const s3 = new S3({
     credentials: {
         accessKeyId: "AKIAWM436JAKBECFQZJN",
