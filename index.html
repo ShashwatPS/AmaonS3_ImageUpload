@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>File Upload</title>
+</head>
+<body>
+<h1>File Upload</h1>
+
+<input type="file" id="fileInput" />
+<button onclick="uploadFile()">Upload File</button>
+
+<h2>Uploaded Image:</h2>
+<img id="uploadedImage" style="max-width: 400px;" />
+
+<h2>Get Signed URL:</h2>
+<input type="text" id="filenameInput" placeholder="Enter filename" />
+<button onclick="getSignedUrl()">Get Signed URL</button>
+
+<h2>Signed URL:</h2>
+<textarea id="signedUrl" rows="4" cols="50" readonly></textarea>
+
+<script>
+    async function uploadFile() {
+        const fileInput = document.getElementById('fileInput');
+        const file = fileInput.files[0];
+
+        const formData = new FormData();
+        formData.append('photos', file);
+        try {
+            const response = await fetch('http://localhost:4000/upload', {
+                method: 'POST',
+                body: formData
+            });
+            const result = await response.json();
+            console.log(result);
+            const uploadedImage = document.getElementById('uploadedImage');
+            uploadedImage.src = `http://frosthacks.s3.amazonaws.com/${result.data.imageName}`;
+        } catch (error) {
+            console.error('Error uploading file:', error);
+        }
+    }
+
+    async function getSignedUrl() {
+        const filenameInput = document.getElementById('filenameInput');
+        const filename = filenameInput.value;
+
+        try {
+            const response = await fetch(`http://localhost:4000/url/${filename}`);
+            const signedUrl = await response.text();
+            const signedUrlTextarea = document.getElementById('signedUrl');
+            signedUrlTextarea.value = signedUrl;
+        } catch (error) {
+            console.error('Error getting signed URL:', error);
+        }
+    }
+</script>
+</body>
+</html>
