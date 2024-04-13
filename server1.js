@@ -2,9 +2,10 @@ const express = require('express');
 const multer = require('multer');
 const { S3, PutObjectCommand, GetObjectCommand } = require('@aws-sdk/client-s3');
 const { getSignedUrl } = require('@aws-sdk/s3-request-presigner');
+const cors = require("cors")
 
 const app = express();
-
+app.use(cors());
 
 const s3 = new S3({
     credentials: {
