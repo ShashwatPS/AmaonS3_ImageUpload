@@ -34,7 +34,7 @@ app.post('/upload', upload.single('photo'), async (req, res) => {
             Bucket: "frosthacks",
             Key: imageName,
         };
-        const signedUrl = await getSignedUrl(s3, new GetObjectCommand(signedUrlParams), { expiresIn: 300 });
+        const signedUrl = await getSignedUrl(s3, new GetObjectCommand(signedUrlParams), { expiresIn: 50000 });
         res.status(200).json({ signedUrl });
     } catch (error) {
         console.error('Error uploading file:', error);
